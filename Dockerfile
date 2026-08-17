@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential \
         swig \
         git \
+        patch \
         pkg-config \
         libssl-dev \
         libffi-dev \
@@ -11,6 +12,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libjpeg-dev \
         libmagic-dev \
     && rm -rf /var/lib/apt/lists/*
+
+COPY patches /patches
+
+RUN pip download --no-cache-dir http-parser==0.9.0 --no-deps --no-binary :all: -d /tmp/http-parser \
+    && tar xzf /tmp/http-parser/http-parser-0.9.0.tar.gz -C /tmp/http-parser \
+    && patch -p1 -d /tmp/http-parser < /patches/http-parser-py311.patch \
+    && pip install --no-cache-dir --no-deps /tmp/http-parser/http-parser-0.9.0 \
+    && rm -rf /tmp/http-parser
 
 RUN pip install --no-cache-dir \
         git+https://github.com/n1nj4sec/pupy@nextgen
