@@ -37,7 +37,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
 COPY --from=builder /usr/local/bin/pupysh /usr/local/bin/pupysh
-COPY --from=builder /usr/local/bin/pupygen /usr/local/bin/pupygen
+
+COPY bin/pupygen /usr/local/bin/pupygen
+RUN chmod +x /usr/local/bin/pupygen
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

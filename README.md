@@ -31,10 +31,11 @@ docker run -d --name pupy-server \
 
 ### 生成 payload
 
-服务端镜像同时包含 `pupygen`，可交互式进入容器生成 payload：
+服务端镜像同时包含 `pupygen` 命令，可生成 payload：
 
 ```sh
-docker exec -it pupy-server pupysh -l "tcp 127.0.0.1:4444"
+docker run --rm -it -v pupy-data:/data -e PUPY_WORKDIR=/data \
+  pikun223/pupy-server pupygen -f py -o /data/pupy.py
 ```
 
 ## 原理
